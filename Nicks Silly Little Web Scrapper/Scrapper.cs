@@ -91,11 +91,14 @@ internal partial class Scrapper
             if (!string.IsNullOrWhiteSpace(html))
             {
                 MatchCollection hrefCollection = LinkMatch().Matches(html);
-                foreach (Match href in hrefCollection.Cast<Match>())
+
+                Parallel.ForEach(hrefCollection, new() { MaxDegreeOfParallelism = 100 }, href =>
                 {
-                    string fullUrl = new Uri(new Uri(url), href.Value).ToString();
-                    links.Add(new Link(url, fullUrl));
-                }
+                    if (Uri.TryCreate(new Uri(url), href.Value, out Uri fullUrl))
+                    {
+                        links.Add(new Link(url, fullUrl.ToString()));
+                    }
+                });
 
                 ConcurrentBag<Link> results = [];
 
