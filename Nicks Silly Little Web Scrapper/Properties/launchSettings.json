@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Nicks Silly Little Web Scrapper": {
+      "commandName": "Project",
+      "commandLineArgs": "-u \"https://smilerryan.com\" -d 4 -p"
+    }
+  }
+}
